@@ -1,3 +1,4 @@
 {
-    "MongoURI":"mongodb+srv://gulloahmad:gulloahmad@cluster0.33a9k.mongodb.net/myFirstDatabase?retryWrites=true&w=majority"
+    "MongoURI":"mongodb+srv://gulloahmad:gulloahmad@cluster0.33a9k.mongodb.net/myFirstDatabase?retryWrites=true&w=majority",
+    "jwtSecret":"qwert12345"
 }

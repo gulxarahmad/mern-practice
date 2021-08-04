@@ -7,9 +7,10 @@ const PORT = process.env.PORT || 5000
 
 dbConnect();
 
+app.use(express.json());
 
 app.get('/',(req,res)=>{
-    res.send('API is runningn')
+    res.send('API is running')
 })
 
 app.use('/api/users', require('./Routes/Api/users'))
