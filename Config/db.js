@@ -8,7 +8,8 @@ function dbConnect (){
         mongoose.connect(db, {
             useNewUrlParser: true,
             useUnifiedTopology: true,
-            useCreateIndex:true
+            useCreateIndex:true,
+            useFindAndModify:false
         });
         console.log('DB is conncted')
        
