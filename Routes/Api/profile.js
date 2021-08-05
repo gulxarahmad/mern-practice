@@ -76,13 +76,13 @@ router.post('/create',[auth,[
                 {user:req.user.id},
                 {$set: profileFields},
                 {new:true}
-                )
-                res.json(profile)
+                );
+                return res.json(profile)
         }
         
             profile = new userProfile(profileFields)
             await profile.save();
-            res.json(profile)
+            return res.json(profile)
         
 
       
@@ -91,6 +91,16 @@ router.post('/create',[auth,[
         console.log(err.message)
     }
 
+})
+
+router.get('/all-profiles',async(req,res)=>{
+    try{
+        const profiles = await userProfile.find().populate('user',['name','avatar'])
+        return res.json(profiles)
+    }
+    catch(err){
+        return res.send(err.message)
+    }
 })
 
 module.exports = router
