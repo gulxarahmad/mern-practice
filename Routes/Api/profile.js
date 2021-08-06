@@ -182,4 +182,81 @@ router.put('/add_experience',[auth,[
     }
 })
 
+router.delete('/experience/:exp_id',auth,async(req,res)=>{
+    try{
+        const profile = await userProfile.findOne({user:req.user.id})
+
+        const removeIndex = profile.experience
+        .map(item=>item.id)
+        .indexOf(req.params.exp_id)
+        console.log(removeIndex)
+
+       profile.experience.splice(removeIndex,1)
+       profile.save()
+       return res.json(profile)
+    }
+    catch(err){
+        console.log(err.message)
+        return res.status(400).json({msg:'Server Issue'})
+    }
+})
+
+router.put('/experience/:exp_id',[auth,[
+    check('title','Please Add Title').not().isEmpty(),
+    check('company','Please Add company').not().isEmpty(),
+    check('from','Please Add Date of Joining').not().isEmpty()
+]
+],async(req,res)=>{
+    const errors = validationResult(req)
+    if(!errors.isEmpty()){
+     return res.status(400).json({errors:errors.array()})
+    }
+
+    const {
+        title,
+        company,
+        location,
+        from,
+        to,
+        current,
+        description
+    } = req.body
+
+    const updatedExp = {
+        title,
+        company,
+        location,
+        from,
+        to,
+        current,
+        description
+    }
+
+    try{
+        const profile = await userProfile.findOne({user:req.user.id})
+
+        const updateIndex = profile.experience
+        .map(item=>item.id)
+        .indexOf(req.params.exp_id)
+        console.log(updateIndex)
+
+        profile.experience[updateIndex].title = updatedExp.title
+        profile.experience[updateIndex].company = updatedExp.company
+        profile.experience[updateIndex].location = updatedExp.location
+        profile.experience[updateIndex].from = updatedExp.from
+        profile.experience[updateIndex].to = updatedExp.to
+        profile.experience[updateIndex].current = updatedExp.current
+        profile.experience[updateIndex].description = updatedExp.description
+
+        await profile.save()
+
+       return res.json(profile)
+    }
+    catch(err){
+        console.log(err.message)
+        return res.status(400).json({msg:'Server Issue'})
+    }
+})
+
+
 module.exports = router
