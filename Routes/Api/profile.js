@@ -6,6 +6,9 @@ const {check, validationResult} = require('express-validator/check')
 
 const router = express.Router();
 
+
+//Get Personal Profile
+
 router.get('/me',auth,async(req,res)=>{
     try{
         console.log(req.user.id)
@@ -24,6 +27,8 @@ router.get('/me',auth,async(req,res)=>{
     }
     
 })
+
+// Create and Update Profile
 
 router.post('/create',[auth,[
 
@@ -97,6 +102,8 @@ router.post('/create',[auth,[
 
 })
 
+//Get All Profiles
+
 router.get('/all-profiles',async(req,res)=>{
     try{
         const profiles = await userProfile.find().populate('user',['name','avatar'])
@@ -106,6 +113,8 @@ router.get('/all-profiles',async(req,res)=>{
         return res.send(err.message)
     }
 })
+
+//Get Speicific User
 
 router.get('/user/:user_id',async(req,res)=>{
     try{
@@ -124,6 +133,8 @@ router.get('/user/:user_id',async(req,res)=>{
     }
 })
 
+//Delete User and Profile
+
 router.delete('/',auth, async(req,res)=>{
     try{
 
@@ -136,6 +147,8 @@ router.delete('/',auth, async(req,res)=>{
         return res.send('Sever Error')
     }
 })
+
+//Add Experience
 
 router.put('/add_experience',[auth,[
     check('title','Please Add Title').not().isEmpty(),
@@ -182,6 +195,9 @@ router.put('/add_experience',[auth,[
     }
 })
 
+
+//Delete Specific Experience
+
 router.delete('/experience/:exp_id',auth,async(req,res)=>{
     try{
         const profile = await userProfile.findOne({user:req.user.id})
@@ -200,6 +216,8 @@ router.delete('/experience/:exp_id',auth,async(req,res)=>{
         return res.status(400).json({msg:'Server Issue'})
     }
 })
+
+//Update Specific Experience
 
 router.put('/experience/:exp_id',[auth,[
     check('title','Please Add Title').not().isEmpty(),
